@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pdp_ui3/pages/home_page.dart';
+import 'package:pdp_ui3/pages/intro_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,11 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage()
+      home: const IntroPage(),
+      routes: {
+        HomePage.id: (context) => const HomePage(),
+        IntroPage.id: (context) => const IntroPage(),
+      },
     );
   }
 }
