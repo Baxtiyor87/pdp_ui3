@@ -13,6 +13,7 @@ class _IntroPageState extends State<IntroPage> {
 
   late PageController _pageController;
   int currentIndex = 0;
+  int skipIndex = 0;
 
   @override
   void initState() {
@@ -31,20 +32,11 @@ class _IntroPageState extends State<IntroPage> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.black,
-        actions:  [
-          GestureDetector(
-            onTap: (){
-              Navigator.pushReplacementNamed(context, HomePage.id);
-            },
-            child: const Padding(padding: EdgeInsets.only(top: 10, right: 20, left: 20),
-              child: Text('Skip', style: TextStyle(color: Colors.green, fontSize: 18),),
-            ),
-          )
-        ],
+        backgroundColor: Colors.white,
+
       ),
       body: Stack(
         alignment: Alignment.bottomCenter,
@@ -53,6 +45,7 @@ class _IntroPageState extends State<IntroPage> {
             onPageChanged: (int page){
               setState(() {
                 currentIndex = page;
+                skipIndex = page;
               });
             },
             controller: _pageController,
@@ -75,24 +68,45 @@ class _IntroPageState extends State<IntroPage> {
               ),
             ],
           ),
-          Container(
-            margin: const EdgeInsets.only(bottom: 60),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: _buildIndicator(),
-            ),
-          ),
+         
+
+              Container(
+                width: 80,
+                height: 30,
+                margin: const EdgeInsets.only(bottom: 30),
+                child:  Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                        children: _buildIndicator(),
+                      ),
+              ),
+          Row(
+             mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: _buildSkip(),
+          )
         ],
       ),
     );
   }
 
-  Widget makePage({image, title, content, reverse = false}) {
+  Widget makePage({ title, content,image, reverse = false}) {
     return Container(
       padding: const EdgeInsets.only(left: 50, right: 50, bottom: 60),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          Text(title, style: const TextStyle(
+              color: Colors.red,
+              fontSize: 30,
+              fontWeight: FontWeight.bold
+          ),),
+          const SizedBox(height: 30,),
+          Text(content, textAlign: TextAlign.center, style: const TextStyle(
+              color: Colors.grey,
+              fontSize: 20,
+              fontWeight: FontWeight.w400
+          ),
+          ),
 
           Column(
             children: <Widget>[
@@ -103,17 +117,7 @@ class _IntroPageState extends State<IntroPage> {
               const SizedBox(height: 10,),
             ],
           ),
-          Text(title, style: const TextStyle(
-              color: Colors.green,
-              fontSize: 30,
-              fontWeight: FontWeight.bold
-          ),),
-          const SizedBox(height: 30,),
-          Text(content, textAlign: TextAlign.center, style: const TextStyle(
-              color: Colors.grey,
-              fontSize: 20,
-              fontWeight: FontWeight.w400
-          ),),
+
         ],
       ),
     );
@@ -126,9 +130,10 @@ class _IntroPageState extends State<IntroPage> {
       width: isActive ? 30 : 6,
       margin: const EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
-          color: Colors.green,
-          borderRadius: BorderRadius.circular(5)
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(5),
       ),
+
     );
   }
 
@@ -137,11 +142,38 @@ class _IntroPageState extends State<IntroPage> {
     for (int i = 0; i<3; i++) {
       if (currentIndex == i) {
         indicators.add(_indicator(true));
-      } else {
+      }
+
+      else {
         indicators.add(_indicator(false));
       }
     }
     return indicators;
+  }
+
+  Widget _skip(bool isActive) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      child: isActive? GestureDetector(
+       onTap: (){
+        Navigator.pushReplacementNamed(context, HomePage.id);
+      },
+      child: const Padding(padding: EdgeInsets.only(bottom: 40, right: 20, left: 20),
+        child: Text('Skip', style: TextStyle(color: Colors.red, fontSize: 18),),
+      ),
+    ): null,
+    );
+  }
+
+  List<Widget> _buildSkip() {
+    List<Widget> skip = [];
+    if (skipIndex > 1) {
+        skip.add(_skip(true));
+      } else {
+        skip.add(_skip(false));
+      }
+
+    return skip;
   }
 
 }
