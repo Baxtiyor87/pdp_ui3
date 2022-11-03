@@ -122,7 +122,7 @@ class _IntroPageState extends State<IntroPage> {
       ),
     );
   }
-
+  // #indicator bool
   Widget _indicator(bool isActive) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -143,14 +143,13 @@ class _IntroPageState extends State<IntroPage> {
       if (currentIndex == i) {
         indicators.add(_indicator(true));
       }
-
       else {
         indicators.add(_indicator(false));
       }
     }
     return indicators;
   }
-
+  // #Skip bool
   Widget _skip(bool isActive) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
